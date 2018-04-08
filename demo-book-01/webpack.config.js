@@ -1,5 +1,6 @@
 // 引入path包
 const path = require('path');
+var webpack=require('webpack')
 //导入插件
 const ExtractTextPlugin = require('extract-text-webpack-plugin');
 
@@ -15,6 +16,7 @@ var config = {
 		filename: 'main.js'
 	},
 	module: {
+		
 		//是一个数组，定义了规则
 		//方式1：
 		//		rules: [{
@@ -36,6 +38,22 @@ var config = {
 		{
 			test:/\.vue$/,
 			use:['vue-loader'],
+		},
+		{
+			test:/\.eot(\?v=\d+\.\d+\.\d+)?$/,
+			use:['file'],
+		},
+		{
+			test:/\.(woff|woff2)$/,
+			use:['url?prefix=font/&limit=5000'],
+		},
+		{
+			test:/\.ttf(\?v=\d+\.\d+\.\d+)?$/,
+			use:['url?limit=10000&mimetype=application/octet-stream'],
+		},
+		{
+			test:/\.svg(\?v=\d+\.\d+\.\d+)?$/,
+			use:['url?limit=10000&mimetype=image/svg+xml'],
 		},
 		{
 			test: /\.(png|jpg|gif)$/,
@@ -71,6 +89,11 @@ var config = {
 	 new ExtractTextPlugin({
 	 	filename: "css/[name]_[hash:4].css",
 	 }),
+	 new webpack.ProvidePlugin({
+		 "$":"jquery",
+		 "jQuery":"jquery",
+		 "window.jQuery":"jquery"
+	 })
 	 ]
 
 	};

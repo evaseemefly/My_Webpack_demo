@@ -1,6 +1,11 @@
 //导入css模块
 import Vue from 'vue'
 import App from './app.vue'
+import 'bootstrap'
+// import 'echarts'
+// import 'bootstrap/dist/css/bootstrap.css'
+// import 'bootstrap/dist/js/bootstrap.js'
+// import 'bootstrap/dist/js/bootstrap.min.css'
 // import compontent from './compontent.vue'
 
 new Vue({
