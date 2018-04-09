@@ -1,39 +1,67 @@
+
 <template>
-	<div>
-		<!--<h1>你好{{name}}</h1>-->    
-		<v-title title="Vue组件化"></v-title>
-		<v-button @click="handleClick">点击按钮</v-button>
-		<p>
-			<img src="./images/image.png" style="width:200px;">
-		</p>
-	</div>    
+<div id="duty" class="duty">
+    <!-- 顶部导航栏 -->
+    <!-- <div class="top_navbar"></div> -->
+    <itemtopnavbar></itemtopnavbar>
+    <!-- <v-title title="题目Vue组件化"></v-title> -->
+	<!-- <v-button @click="handleClick">点击按钮</v-button> -->
+    <!-- 左侧菜单栏 -->
+    <leftlistmenu></leftlistmenu>
+    <!-- 中间部分 -->
+    <div id="content" class="col-md-10">
+        <!-- 日历插件
+         -->
+        <calendar></calendar>
+        <operatemenu></operatemenu>
+        <div class="duty_personlist"></div>
+    </div>
+</div>
 </template>
-<style>
-h1{
-	color:red;		
+
+<style scoped>
+/* @import 'bootstrap/dist/css/bootstrap.css'; */
+/* #duty{
+    background: plum;
+    border: 1px dashed red;
+} */
+.top_navbar {
+  /* .navbar */
+}
+#duty{
+    /* 注意需要设置最外侧的div的高度 */
+    height: 100%;
+}
+#content{
+
 }
 </style>
 <script>
-	// export default{
-	// 	data(){
-	// 		return {
-	// 			name:'vue.js'
-	// 		}
-	// 	}
-	// }
+import "bootstrap";
+// 导入顶部导航栏的模块
+import vItemTopNavbar from "./views/topnavbar.vue";
+import vLeftListMenu from "./views/leftlistmenu.vue";
+import vCalendar from "./views/calendar.vue";
+import vOperateMenu from "./views/operatemenu.vue";
 
-	import vTitle from './title.vue';
-	import vButton from './button.vue';
+// import './src/css/main.css';
 
-	export default{
-		components:{
-			vTitle,
-			vButton
-		},
-		methods:{
-			handleClick(e){
-				console.log(e);
-			}
-		}
-	}
-	</script>
+/*全局注册组件*/
+// Vue.component('item_top_navbar',item_top_navbar);
+
+// /*定义vue实例app1*/
+// var app1 = new Vue({
+//     el: '#duty'
+// });
+export default {
+  //   el:'#duty',
+  components: {
+    // vTopnavbar,
+    itemtopnavbar: vItemTopNavbar,
+    leftlistmenu: vLeftListMenu,
+    calendar:vCalendar,
+    operatemenu:vOperateMenu
+    // vButton
+  }
+};
+</script>

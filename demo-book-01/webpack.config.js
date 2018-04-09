@@ -1,13 +1,15 @@
 // 引入path包
 const path = require('path');
-var webpack=require('webpack')
+var webpack = require('webpack')
 //导入插件
 const ExtractTextPlugin = require('extract-text-webpack-plugin');
 
 var config = {
 	//入口文件
 	entry: {
-		main: './main'
+        main: ['./main.js','jquery','bootstrap']
+        // main: ['./main.js','bootstrap-loader?bootstrapPath=/path/to/bootstrap']
+        // vendor: ['jquery','bootstrap']
 	},
 	//输出文件
 	output: {
@@ -16,86 +18,69 @@ var config = {
 		filename: 'main.js'
 	},
 	module: {
-		
-		//是一个数组，定义了规则
-		//方式1：
-		//		rules: [{
-		//			test: /\.css$/,
-		//			use: ['style-loader', 'css-loader']
-		//		}]
+        rules: [
+            {
+                test: /\.vue$/,
+                loader: 'vue-loader'
+                // options: {
+                //     loaders: {
+                //         css: ExtractTextPlugin.extract({
+                //             use: 'css-loader',
+                //             fallback: 'vue-style-loader'
+                //         })
+                //     }
+                // }
+            },
+            {
+                test: /\.js$/,
+                loader: 'babel-loader',
+                exclude: /node_modules/
+            },
+            {
+                // test: /\.css$/,
+                // use: ExtractTextPlugin.extract({
+                //     use: 'css-loader',
+                //     fallback: 'style-loader'
+                // })
+                test: /\.css$/,
+                loader: 'style-loader!css-loader'
+            },
+            {
+                test: /\.scss$/,
+                use: [{
+                    loader: "style-loader" // creates style nodes from JS strings
+                }, {
+                    loader: "css-loader" // translates CSS into CommonJS
+                }, {
+                    loader: "sass-loader" // compiles Sass to CSS
+                }]
+            },
+            { test:/bootstrap-sass[\/\\]assets[\/\\]javascripts[\/\\]/, loader: 'imports-loader?jQuery=jquery' },
 
-		//方式2：
-		rules: [{
-			test: /\.css$/,
-			use: ExtractTextPlugin.extract({
-				fallback: "style-loader",
-				use: "css-loader"
-			})
-		},{
-			test:/\.js$/,
-			use:['babel-loader'],
-		},
-		{
-			test:/\.vue$/,
-			use:['vue-loader'],
-		},
-		{
-			test:/\.eot(\?v=\d+\.\d+\.\d+)?$/,
-			use:['file'],
-		},
-		{
-			test:/\.(woff|woff2)$/,
-			use:['url?prefix=font/&limit=5000'],
-		},
-		{
-			test:/\.ttf(\?v=\d+\.\d+\.\d+)?$/,
-			use:['url?limit=10000&mimetype=application/octet-stream'],
-		},
-		{
-			test:/\.svg(\?v=\d+\.\d+\.\d+)?$/,
-			use:['url?limit=10000&mimetype=image/svg+xml'],
-		},
-		{
-			test: /\.(png|jpg|gif)$/,
-			use: [
-			{
-				loader: 'file-loader',
-				options: {}  
-			}
-			]
-		}
-		]
-	},
-	devtool:'source-map',
-	//方式2：
-	//	plugins: [
-	//		new ExtractTextPlugin({
-	//			//从.js文件中提取出来的.css文件的名称
-	//			filename: `[name]_[contenthash:8].css`,
-	//		})
-	//	]
-	//自己的尝试（有错误）
-	//	plugins: [
-	//  new ExtractTextPlugin(options: filename | '[name]_[contenthash:8].css')
-	//]
-	
-	
+            {
+                test: /\.(gif|jpg|png|woff|svg|eot|ttf)\??.*$/,
+                loader: 'url-loader?limit=1024'
+            }
+        ]
+    },
+    
+	devtool: 'source-map',
 	/*
 	 * Error: Path variable [contenthash] not implemented in this context: css/[name]-[contenthash].css
 	 * 路径变量contenthash没有在此上下文中实现 
 	 * 不适用contenthash，改为hash
 	 */
-	 plugins: [
-	 new ExtractTextPlugin({
-	 	filename: "css/[name]_[hash:4].css",
-	 }),
-	 new webpack.ProvidePlugin({
-		 "$":"jquery",
-		 "jQuery":"jquery",
-		 "window.jQuery":"jquery"
-	 })
-	 ]
+	plugins: [
+		new ExtractTextPlugin({
+			filename: "css/[name]_[hash:4].css",
+		}),
+		new webpack.ProvidePlugin({
+			"$": "jquery",
+			"jQuery": "jquery",
+			"window.jQuery": "jquery"
+		})
+	]
 
-	};
+};
 
-	module.exports = config;
+module.exports = config;
